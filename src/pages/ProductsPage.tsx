@@ -5,7 +5,7 @@ import { getProducts } from "../redux/slices/productsSlice";
 import ProductCard from "../components/ProductCard";
 import { addToCart } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
-import { Box, Grid, Typography, Container, Paper } from "@mui/material";
+import {Grid,Container, Paper } from "@mui/material";
 
 interface ProductsPageProps {
   searchQuery: string;
