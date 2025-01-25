@@ -1,15 +1,17 @@
-import { configureStore } from "@reduxjs/toolkit";
-import productsReducer from "./slices/productsSlice";
-import cartReducer from "./slices/cartSlice";
+// src/redux/store.ts
+import { configureStore } from '@reduxjs/toolkit';
+import productDetailReducer from './slices/productDetailSlice';
+import cartReducer from './slices/cartSlice';
+import productsReducer from './slices/productsSlice';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
-    products: productsReducer,
+    productDetail: productDetailReducer,
     cart: cartReducer,
+    products: productsReducer,
   },
 });
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-
 export default store;
+
+export type RootState = ReturnType<typeof store.getState>; // This infers the type of your store state
+export type AppDispatch = typeof store.dispatch; // This infers the type of your dispatch
