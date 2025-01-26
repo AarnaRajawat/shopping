@@ -1,6 +1,6 @@
 import React from "react";
 import { Product } from "../types";
-import { Box, Typography, Grid, Card, CardContent, CardMedia, Chip, Divider, Rating } from "@mui/material";
+import { Box, Typography, Grid, Card, CardContent, CardMedia, Chip,Rating } from "@mui/material";
 
 // Helper function to format the date (if needed)
 const formatDate = (date: string) => {
