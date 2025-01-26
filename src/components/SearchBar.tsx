@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { TextField } from "@mui/material";
-
 interface SearchBarProps {
   onSearch: (query: string) => void;
 }
