@@ -11,8 +11,7 @@ import { Provider } from "react-redux";
 import { store } from './redux/store';  // Correct path
 
 import SearchBar from "./components/SearchBar";
-import ProductDetailPage from "./components/ProductDetail";
-
+import ProductDetailPage from "./pages/ProductDetailpage";
 const AppContent: React.FC = () => {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");

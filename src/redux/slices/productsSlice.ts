@@ -71,4 +71,3 @@ const productsSlice = createSlice({
 export const { resetSelectedProduct } = productsSlice.actions;
 
 export default productsSlice.reducer;
-
