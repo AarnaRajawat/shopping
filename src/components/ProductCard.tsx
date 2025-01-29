@@ -1,6 +1,6 @@
 import React from "react";
 import { Product } from "../types";
-import { Button, Card, CardContent, Typography, CardMedia, Box } from "@mui/material";
+import { Button, Card, CardContent, Typography, CardMedia} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 interface ProductCardProps {
