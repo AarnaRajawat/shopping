@@ -36,12 +36,12 @@ const ImageSlider: React.FC = () => {
         showArrows={true}
         autoPlay={true}
         infiniteLoop={true}
-        interval={3000} // Auto-rotate every 3 seconds
-        stopOnHover={true} // Stops autoplay when hovered
-        showThumbs={false} // Hide thumbnail images
-        showStatus={false} // Hide the current slide status (e.g., 1/4)
-        dynamicHeight={false} // Fix height
-        swipeable={true} // Enable swipe on mobile devices
+        interval={3000} 
+        stopOnHover={true} 
+        showThumbs={false} 
+        showStatus={false} 
+        dynamicHeight={false} 
+        swipeable={true}
         emulateTouch={true} // Enable touch functionality
         renderArrowPrev={(clickHandler) => (
           <div
