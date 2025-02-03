@@ -1,17 +1,27 @@
-// src/redux/store.ts
-import { configureStore } from '@reduxjs/toolkit';
-import productDetailReducer from './slices/productDetailSlice';
-import cartReducer from './slices/cartSlice';
-import productsReducer from './slices/productsSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+import productDetailReducer from "./slices/productDetailSlice";
+import cartReducer from "./slices/cartSlice";
+import productsReducer from "./slices/productsSlice";
+import categoriesReducer from "./slices/categoriesSlice"; // ✅ Import categories reducer
 
+// Configure the Redux store
 export const store = configureStore({
   reducer: {
     productDetail: productDetailReducer,
     cart: cartReducer,
     products: productsReducer,
+    categories: categoriesReducer, // ✅ Add categories slice here
   },
 });
-export default store;
 
-export type RootState = ReturnType<typeof store.getState>; // This infers the type of your store state
-export type AppDispatch = typeof store.dispatch; // This infers the type of your dispatch
+// RootState is the overall state of the Redux store
+export type RootState = ReturnType<typeof store.getState>;
+
+// AppDispatch is the type for dispatching actions
+export type AppDispatch = typeof store.dispatch;
+
+// Custom hook to avoid TypeScript errors when dispatching actions
+export const useAppDispatch: () => AppDispatch = useDispatch;
+
+export default store;

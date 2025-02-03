@@ -1,4 +1,31 @@
-// Define the types for product reviews
+// Define the Category interface for the structure you provided
+export interface Category {
+  slug: string;    // Unique identifier for the category (e.g., 'beauty', 'fragrances')
+  name: string;    // Display name for the category (e.g., 'Beauty', 'Fragrances')
+  url: string;     // URL to fetch products for this category (e.g., API URL)
+}
+
+// Define the Product interface (keeping your previous definition)
+export interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  discountPercentage: number;
+  rating: number;
+  stock: number;
+  brand: string;
+  category: string;
+  thumbnail: string;
+  image?: string;
+  weight?: number;
+  dimensions?: Dimensions;
+  additionalInfo?: string;
+  reviews: Review[];
+  meta: Meta;
+}
+
+// Define the Review, Dimensions, and Meta interfaces (as before)
 export interface Review {
   rating: number;
   comment: string;
@@ -7,14 +34,12 @@ export interface Review {
   reviewerEmail: string;
 }
 
-// Define the types for product dimensions
 export interface Dimensions {
   width: number;
   height: number;
   depth: number;
 }
 
-// Define the types for metadata
 export interface Meta {
   createdAt: string;
   updatedAt: string;
@@ -22,27 +47,8 @@ export interface Meta {
   qrCode: string;
 }
 
-// Define the Product interface, including reviews, metadata, and dimensions
-export interface Product {
-  id: number;                      // Unique identifier for the product
-  title: string;                   // Name of the product
-  description: string;             // Detailed description of the product
-  price: number;                   // Price of the product
-  discountPercentage: number;      // Discount percentage applied to the product
-  rating: number;                  // Rating of the product (1 to 5 scale)
-  stock: number;                   // Available stock for the product
-  brand: string;                   // Brand of the product
-  category: string;                // Category the product belongs to
-  thumbnail: string;               // Thumbnail image URL for the product
-  image?: string;                  // Full image URL for the product (optional)
-  weight?: number;                 // Weight of the product (optional)
-  dimensions?: Dimensions;         // Optional dimensions (length, width, height) of the product
-  additionalInfo?: string;         // Any additional information about the product
-  reviews: Review[];               // List of reviews for the product
-  meta: Meta;                      // Metadata for the product
-}
-
+// Define the CartItem interface (as before)
 export interface CartItem extends Product {
-  quantity: number;                // Quantity of the product added to the cart
-  totalPrice: number;              // Total price for this product based on quantity (calculated)
+  quantity: number;
+  totalPrice: number;
 }

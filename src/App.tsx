@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from './redux/store'; 
+
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ProductsPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
-import ImageSlider from "./components/ImageSlider";
-import { Provider } from "react-redux";
-
-import { store } from './redux/store'; 
 import ProductDetailPage from "./pages/ProductDetailpage";
+import CategoryPage from "./components/CategoriesNav"; // Import CategoryPage
+import ImageSlider from "./components/ImageSlider";
+import "slick-carousel/slick/slick.css"; // Carousel styles
+import "slick-carousel/slick/slick-theme.css"; // Carousel theme styles
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -16,8 +19,10 @@ const AppContent: React.FC = () => {
 
   return (
     <>
-      {/* Pass `onSearch` to Header */}
       <Header onSearch={setSearchQuery} />
+      <div>
+        <CategoryPage /> {/* This will be rendered on all pages */}
+      </div>
 
       {/* Conditionally render ImageSlider only on the homepage */}
       {location.pathname === "/" && (
@@ -25,6 +30,9 @@ const AppContent: React.FC = () => {
           <ImageSlider />
         </div>
       )}
+
+      {/* Categories Section (will appear after navbar) */}
+     
 
       <Routes>
         <Route path="/" element={<ProductsPage searchQuery={searchQuery} />} />
