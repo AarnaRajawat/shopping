@@ -75,3 +75,4 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ searchQuery }) => {
 };
 
 export default ProductsPage;
+

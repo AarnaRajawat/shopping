@@ -52,3 +52,11 @@ export interface CartItem extends Product {
   quantity: number;
   totalPrice: number;
 }
+
+export interface CategoriesState {
+  categories: string[];
+}
+
+export interface ProductsState {
+  products: Product[];
+}

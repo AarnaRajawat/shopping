@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from './redux/store'; 
+import { store } from "./redux/store"; 
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import ProductsPage from "./pages/ProductPage";
-import CartPage from "./pages/CartPage";
-import ProductDetailPage from "./pages/ProductDetailpage";
-import CategoryPage from "./components/CategoriesNav"; // Import CategoryPage
+import CategoryPage from "./components/CategoriesNav"; 
 import ImageSlider from "./components/ImageSlider";
-import "slick-carousel/slick/slick.css"; // Carousel styles
-import "slick-carousel/slick/slick-theme.css"; // Carousel theme styles
+
+// Lazy-loaded components
+const ProductsPage = lazy(() => import("./pages/ProductPage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const ProductDetailPage = lazy(() => import("./pages/ProductDetailpage"));
+const CategoryProducts = lazy(() => import("./components/CategoryProducts"));
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -20,25 +21,24 @@ const AppContent: React.FC = () => {
   return (
     <>
       <Header onSearch={setSearchQuery} />
-      <div>
-        <CategoryPage /> {/* This will be rendered on all pages */}
-      </div>
+      <CategoryPage />
 
-      {/* Conditionally render ImageSlider only on the homepage */}
+      {/* Show ImageSlider only on the home page */}
       {location.pathname === "/" && (
         <div style={{ marginTop: "20px", padding: "0 20px" }}>
           <ImageSlider />
         </div>
       )}
 
-      {/* Categories Section (will appear after navbar) */}
-     
-
-      <Routes>
-        <Route path="/" element={<ProductsPage searchQuery={searchQuery} />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/product/:id" element={<ProductDetailPage />} />
-      </Routes>
+      {/* Suspense for lazy-loaded components */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<ProductsPage searchQuery={searchQuery} />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/product/:id" element={<ProductDetailPage />} />
+          <Route path="/category/:category" element={<CategoryProducts />} />
+        </Routes>
+      </Suspense>
 
       <Footer />
     </>

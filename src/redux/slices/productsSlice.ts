@@ -1,11 +1,12 @@
 // src/redux/slices/productsSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchProducts, fetchProductById } from "../../api/productsApi"; // Import the API functions
+import { fetchProducts, fetchProductById, fetchProductsByCategory } from "../../api/productsApi"; 
 import { Product } from "../../types";
 
 // Define the state structure
 interface ProductsState {
   products: Product[];           // List of all products
+  categoryProducts: Product[];   // Products filtered by category
   loading: boolean;              // Loading state
   error: string | null;          // Error state
   selectedProduct: Product | null; // Single selected product for details page
@@ -13,13 +14,23 @@ interface ProductsState {
 
 const initialState: ProductsState = {
   products: [],
+  categoryProducts: [],
   loading: false,
   error: null,
-  selectedProduct: null, // Initially no product selected
+  selectedProduct: null,
 };
 
 // Fetch all products - Async thunk
 export const getProducts = createAsyncThunk("products/getProducts", fetchProducts);
+
+// Fetch products by category - Async thunk
+export const getProductsByCategory = createAsyncThunk(
+  "products/getProductsByCategory",
+  async (category: string) => {
+    const response = await fetchProductsByCategory(category);
+    return response;
+  }
+);
 
 // Fetch single product by ID - Async thunk
 export const getProductById = createAsyncThunk(
@@ -35,30 +46,44 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     resetSelectedProduct: (state) => {
-      state.selectedProduct = null; // Reset the selected product when navigating away from detail page
+      state.selectedProduct = null;
     },
   },
   extraReducers: (builder) => {
-    // Handling the fetching of all products
     builder
+      // Fetching all products
       .addCase(getProducts.pending, (state) => {
         state.loading = true;
       })
       .addCase(getProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload; // Set the list of products
+        state.products = action.payload;
       })
       .addCase(getProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch products.";
       })
-      // Handling the fetching of a single product by ID
+
+      // Fetching products by category
+      .addCase(getProductsByCategory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getProductsByCategory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.categoryProducts = action.payload; // Store category-specific products
+      })
+      .addCase(getProductsByCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch category products.";
+      })
+
+      // Fetching a single product by ID
       .addCase(getProductById.pending, (state) => {
         state.loading = true;
       })
       .addCase(getProductById.fulfilled, (state, action) => {
         state.loading = false;
-        state.selectedProduct = action.payload; // Set the selected product for the detail page
+        state.selectedProduct = action.payload;
       })
       .addCase(getProductById.rejected, (state, action) => {
         state.loading = false;
@@ -67,7 +92,6 @@ const productsSlice = createSlice({
   },
 });
 
-// Export the resetSelectedProduct action to reset the selected product when needed
 export const { resetSelectedProduct } = productsSlice.actions;
-
 export default productsSlice.reducer;
+

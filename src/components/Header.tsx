@@ -155,4 +155,3 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
 };
 
 export default Header;
-

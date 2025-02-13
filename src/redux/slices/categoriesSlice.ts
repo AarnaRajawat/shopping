@@ -1,28 +1,43 @@
-// categoriesSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { Category } from "../../types"; // Import Category type
+import { fetchCategories } from "../../api/productsApi"; // Ensure this returns string[]
 
 interface CategoriesState {
-  categories: Category[]; // Array of categories
+  categories: string[];
   loading: boolean;
   error: string | null;
 }
 
+// ✅ Initial state
 const initialState: CategoriesState = {
   categories: [],
   loading: false,
   error: null,
 };
 
-// Define the async thunk for fetching categories
-export const fetchCategoriesThunk = createAsyncThunk<Category[]>(
+// ✅ Async Thunk with explicit return type
+export const fetchCategoriesThunk = createAsyncThunk<
+  string[], // Expected return type (fulfilled)
+  void, 
+  { rejectValue: string } // Expected rejection value
+>(
   "categories/fetchCategories",
-  async () => {
-    const response = await fetch("https://dummyjson.com/products/categories");
-    return response.json(); // This should return an array of Category objects
+  async (_, { rejectWithValue }) => {
+    try {
+      const categories = await fetchCategories();
+      console.log("Fetched Categories from API:", categories);
+
+      if (!Array.isArray(categories)) {
+        throw new Error("Invalid API response: Expected an array");
+      }
+
+      return categories as string[]; // ✅ Type assertion
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Error fetching categories");
+    }
   }
 );
 
+// ✅ Create Redux slice
 const categoriesSlice = createSlice({
   name: "categories",
   initialState,
@@ -31,17 +46,22 @@ const categoriesSlice = createSlice({
     builder
       .addCase(fetchCategoriesThunk.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(fetchCategoriesThunk.fulfilled, (state, action) => {
+        console.log("Redux Fulfilled:", action.payload);
         state.loading = false;
-        state.categories = action.payload; // Set the fetched categories
+        state.categories = action.payload; // ✅ Safe assignment
       })
       .addCase(fetchCategoriesThunk.rejected, (state, action) => {
+        console.error("Redux Rejected:", action.payload);
         state.loading = false;
-        state.error = action.error.message || "Failed to fetch categories";
+        state.error = action.payload ?? "Unknown error"; // ✅ Correct type handling
       });
   },
 });
 
 export default categoriesSlice.reducer;
+
+
 

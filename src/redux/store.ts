@@ -21,7 +21,8 @@ export type RootState = ReturnType<typeof store.getState>;
 // AppDispatch is the type for dispatching actions
 export type AppDispatch = typeof store.dispatch;
 
-// Custom hook to avoid TypeScript errors when dispatching actions
-export const useAppDispatch: () => AppDispatch = useDispatch;
+// ✅ Custom hook for dispatching actions correctly with TypeScript support
+export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export default store;
+

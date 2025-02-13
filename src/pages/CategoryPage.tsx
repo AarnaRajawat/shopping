@@ -1,13 +1,19 @@
-import React from 'react';
-import CategoriesNav from '../components/CategoriesNav'; // ✅ Import CategoriesNav
+import React from "react";
+import CategoriesNav from "../components/CategoriesNav";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 
-const CategoryPage: React.FC = () => {
+const CategoriesPage: React.FC = () => {
   return (
-    <div>
-      {/* ✅ Render only CategoriesNav */}
+    <Container>
+      <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
+        Categories
+      </Typography>
       <CategoriesNav />
-    </div>
+
+
+    </Container>
   );
 };
 
-export default CategoryPage;
+export default CategoriesPage;

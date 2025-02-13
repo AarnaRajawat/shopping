@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const API_URL = 'https://dummyjson.com/products';
-const CATEGORY_API_URL = 'https://dummyjson.com/products/categories';
 
 // Fetch all products
 export const fetchProducts = async () => {
@@ -27,17 +26,6 @@ export const fetchProductById = async (id: number) => {
   }
 };
 
-// Fetch all categories
-export const fetchCategories = async () => {
-  try {
-    const response = await axios.get(CATEGORY_API_URL);
-    return response.data; // Assuming the API returns a list of categories
-  } catch (error: any) {
-    console.error('Error fetching categories:', error.response?.data || error.message);
-    throw new Error(error.response?.data?.message || 'Error fetching categories');
-  }
-};
-
 // Fetch products by category
 export const fetchProductsByCategory = async (category: string) => {
   try {
@@ -50,4 +38,16 @@ export const fetchProductsByCategory = async (category: string) => {
     throw new Error(error.response?.data?.message || `Error fetching products for category "${category}"`);
   }
 };
-
+// ✅ Fetch unique categories dynamically from products
+// ✅ Fetch unique categories
+export const fetchCategories = async () => {
+  try {
+    const products = await fetchProducts(); // Fetch all products
+    const categories = [...new Set(products.map((product: any) => product.category))]; // Extract unique categories
+    console.log("Fetched Categories:", categories); // Debugging
+    return categories; // Should return an array of category strings
+  } catch (error: any) {
+    console.error("Error fetching categories:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Error fetching categories");
+  }
+};
